@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <unistd.h>
-#include <dump/pixel_dump.h>
-#include <android-base/properties.h>
 #include <android-base/file.h>
+#include <android-base/properties.h>
+#include <dirent.h>
+#include <dump/pixel_dump.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define GPS_LOG_NUMBER_PROPERTY "persist.vendor.gps.aol.log_num"
 #define GPS_LOG_DIRECTORY "/data/vendor/gps/logs"
+#define GPS_RESOURCE_DIRECTORY "/data/vendor/gps/resource"
 #define GPS_TMP_LOG_DIRECTORY "/data/vendor/gps/logs/.tmp"
 #define GPS_LOG_PREFIX "gl-"
 #define GPS_MCU_LOG_PREFIX "esw-"
@@ -28,6 +31,40 @@
 #define GPS_VENDOR_CHIP_INFO "/data/vendor/gps/chip.info"
 #define GPS_RAWLOG_PREFIX "rawbin"
 #define GPS_MEMDUMP_LOG_PREFIX "memdump_"
+
+static void copyDirectory(const std::string &source,
+                          const std::string &outputDir) {
+  DIR *dir = opendir(source.c_str());
+  if (dir == nullptr) {
+    return;
+  }
+
+  if (mkdir(outputDir.c_str(), 0777) == -1) {
+    closedir(dir);
+    return;
+  }
+
+  struct dirent *entry;
+  while ((entry = readdir(dir)) != nullptr) {
+    std::string entryName = entry->d_name;
+    if (entryName == "." || entryName == "..") {
+      continue;
+    }
+
+    std::string sourcePath = source + "/" + entryName;
+    std::string destPath = outputDir + "/" + entryName;
+
+    struct stat st;
+    if (stat(sourcePath.c_str(), &st) == 0) {
+      if (S_ISDIR(st.st_mode))
+        copyDirectory(sourcePath, destPath);
+      else
+        copyFile(sourcePath.c_str(), destPath.c_str());
+    }
+  }
+  closedir(dir);
+  return;
+}
 
 int main() {
     if(!::android::base::GetBoolProperty("vendor.gps.aol.enabled", false)) {
@@ -50,6 +87,7 @@ int main() {
     }
     dumpLogs(GPS_LOG_DIRECTORY, outputDir.c_str(), maxFileNum, GPS_RAWLOG_PREFIX);
     dumpLogs(GPS_LOG_DIRECTORY, outputDir.c_str(), 18, GPS_MEMDUMP_LOG_PREFIX);
+    copyDirectory(GPS_RESOURCE_DIRECTORY, concatenatePath(outputDir.c_str(), "resource"));
     return 0;
 }
 
