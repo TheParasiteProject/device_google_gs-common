@@ -9,5 +9,8 @@ PRODUCT_PACKAGES += \
        android.hardware.bluetooth.prebuilt.xml \
        android.hardware.bluetooth_le.prebuilt.xml
 
+BOARD_SEPOLICY_DIRS += device/google/gs-common/bluetooth/sepolicy
+BOARD_SEPOLICY_DIRS += hardware/google/pixel-sepolicy/powerstats
+
 DEVICE_MANIFEST_FILE += device/google/gs-common/bluetooth/manifest_bluetooth.xml
 DEVICE_PRODUCT_COMPATIBILITY_MATRIX_FILE += device/google/gs-common/bluetooth/compatibility_matrix.xml
