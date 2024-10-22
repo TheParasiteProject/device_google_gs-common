@@ -229,8 +229,8 @@ int main() {
                             read_buffer(19, 131072, "skhynix_13_ufs_err_history.dat");
                         } else {
                             read_buffer(0, 4096, "skhynix_00_ufs_err_history.dat");
-                            read_buffer(16, 524288, "skhynix_10_ufs_err_history.dat");
-                            read_buffer(17, 524288, "skhynix_11_ufs_err_history.dat");
+                            read_buffer(16, 8388608, "skhynix_10_ufs_err_history.dat");
+                            read_buffer(17, 8388608, "skhynix_11_ufs_err_history.dat");
                         }
                         break;
                       case 0x1CE: //SAMSUNG
