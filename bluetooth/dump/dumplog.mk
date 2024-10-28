@@ -1,0 +1,1 @@
+PRODUCT_PACKAGES_DEBUG += dump_bt
