@@ -1,5 +1,4 @@
 # GCANext and GCAEng.
-# b/363018500
 typeattribute debug_camera_app coredomain;
 
 userdebug_or_eng(`
