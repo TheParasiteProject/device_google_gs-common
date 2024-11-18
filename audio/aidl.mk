@@ -16,7 +16,11 @@ PRODUCT_PACKAGES += \
     libhapticgeneratoraidl \
 
 BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/aidl
-BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hdmi_audio
+ifeq ($(AUDIO_USE_DPTX_SEPOLICY),true)
+BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hdmi_audio/dptx
+else
+BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hdmi_audio/drmdp
+endif
 
 include device/google/gs-common/audio/common.mk
 
