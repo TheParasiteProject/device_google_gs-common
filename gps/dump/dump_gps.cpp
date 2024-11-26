@@ -17,6 +17,7 @@
 #include <android-base/properties.h>
 #include <dirent.h>
 #include <dump/pixel_dump.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -66,6 +67,58 @@ static void copyDirectory(const std::string &source,
   return;
 }
 
+int compareFileExtensions(const struct dirent **a, const struct dirent **b) {
+    int num_a, num_b;
+    sscanf((*a)->d_name, "rawbinlog.out.%d", &num_a);
+    sscanf((*b)->d_name, "rawbinlog.out.%d", &num_b);
+
+    return num_a - num_b;
+}
+
+void dumpLogsAscending(const char* SrcDir, const char* DestDir, int limit, const char* prefix) {
+
+    struct dirent **dirent_list = NULL;
+    int num_entries = scandir(SrcDir, &dirent_list, 0, (int (*)(const struct dirent **, const struct dirent **)) alphasort);
+    if (!dirent_list) {
+        printf("Unable to scan dir: %s.\n", SrcDir);
+        return;
+    } else if (num_entries <= 0) {
+        printf("No file is found.\n");
+        return;
+    }
+
+    if (access(DestDir, R_OK)) {
+        printf("Unable to find folder: %s\n", DestDir);
+        return;
+    }
+
+    qsort(dirent_list, num_entries, sizeof(struct dirent *), (int (*)(const void *, const void *)) compareFileExtensions);
+
+    int copiedFiles = 0;
+
+    for (int i = 0 ; i < num_entries; i++) {
+
+        if (0 != strncmp(dirent_list[i]->d_name, prefix, strlen(prefix))) {
+            continue;
+        }
+
+        if ((copiedFiles >= limit) && (limit != -1)) {
+            printf("Skipped %s\n", dirent_list[i]->d_name);
+            continue;
+        }
+
+        copiedFiles++;
+        copyFile(concatenatePath(SrcDir, dirent_list[i]->d_name).c_str(), concatenatePath(DestDir, dirent_list[i]->d_name).c_str());
+    }
+
+    while (num_entries--) {
+        free(dirent_list[num_entries]);
+    }
+
+    free(dirent_list);
+    return;
+}
+
 int main() {
     if(!::android::base::GetBoolProperty("vendor.gps.aol.enabled", false)) {
         printf("vendor.gps.aol.enabled is false. gps logging is not running.\n");
@@ -85,9 +138,8 @@ int main() {
     if (access(GPS_VENDOR_CHIP_INFO, F_OK) == 0) {
         copyFile(GPS_VENDOR_CHIP_INFO, concatenatePath(outputDir.c_str(), "chip.info").c_str());
     }
-    dumpLogs(GPS_LOG_DIRECTORY, outputDir.c_str(), maxFileNum, GPS_RAWLOG_PREFIX);
+    dumpLogsAscending(GPS_LOG_DIRECTORY, outputDir.c_str(), 5, GPS_RAWLOG_PREFIX);
     dumpLogs(GPS_LOG_DIRECTORY, outputDir.c_str(), 18, GPS_MEMDUMP_LOG_PREFIX);
     copyDirectory(GPS_RESOURCE_DIRECTORY, concatenatePath(outputDir.c_str(), "resource"));
     return 0;
 }
-
