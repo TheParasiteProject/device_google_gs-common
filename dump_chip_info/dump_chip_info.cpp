@@ -19,6 +19,10 @@
 int main() {
     dumpFileContent("ap_rom_patch_ver", "/sys/devices/system/goog-chip-info/ap_rom_patch_ver");
     dumpFileContent("gpcm_asic_id", "/sys/devices/system/goog-chip-info/gpcm_asic_id");
+    dumpFileContent("device_table", "/sys/devices/system/goog-chip-info/device_table");
+    dumpFileContent("dvfs_table", "/sys/devices/system/goog-chip-info/dvfs_table");
+    dumpFileContent("hw_feature_table", "/sys/devices/system/goog-chip-info/hw_feature_table");
+    dumpFileContent("ids_table", "/sys/devices/system/goog-chip-info/ids_table");
 
     return 0;
 }
