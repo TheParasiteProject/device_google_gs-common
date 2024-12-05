@@ -1,5 +1,0 @@
-# Allow tachyon service to communicate with google_camera_app via binder.
-binder_call(edgetpu_tachyon_server, google_camera_app);
-
-# Allow tachyon_service to communicate with fishfood/Eng camera variants via binder.
-binder_call(edgetpu_tachyon_server, debug_camera_app);
