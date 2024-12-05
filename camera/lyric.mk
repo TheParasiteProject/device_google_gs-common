@@ -49,10 +49,6 @@ PRODUCT_SOONG_NAMESPACES += \
     vendor/google/camera/google_3a/libs_v4/gAF \
     vendor/google/camera/google_3a/libs_v4/gafd \
     vendor/google/camera/google_3a/libs_v4/gHAWB/native_coverage
-
-# Calibration tool for debug builds
-PRODUCT_PACKAGES_DEBUG += tarasque_test
-PRODUCT_PACKAGES_DEBUG += ProtoCalibGenerator
 endif  # BUILD_LYRIC_FROM_SOURCE
 
 # Init-time log settings for Google 3A
@@ -73,3 +69,7 @@ DEVICE_MATRIX_FILE += \
 
 # sepolicy dir is added in dump.mk.
 # Make doesn't deduplicate sepolicy dirs, so including it here causes build errors.
+
+# Calibration tools for debug builds
+PRODUCT_PACKAGES_DEBUG += tarasque_test
+PRODUCT_PACKAGES_DEBUG += ProtoCalibGenerator
