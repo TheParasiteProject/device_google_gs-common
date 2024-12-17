@@ -14,4 +14,4 @@ on init
     # Keep the buffer size small. This size is practically enough for debug purpose.
     # Having low size helps because this entire buffer gets dumped in bugreport.
     # Having a large size can impact bugreport size and time it takes to pack/unpack.
-    write /sys/kernel/tracing/instances/irq_gia_google/buffer_size_kb 64
+    write /sys/kernel/tracing/instances/irq_gia_google/buffer_size_kb 16
