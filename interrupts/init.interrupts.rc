@@ -1,7 +1,8 @@
 on init
-    # Create the directory for the trace instance during early init
-    chmod 666 /sys/kernel/tracing/instances/irq_gia_google
-    chmod 666 /sys/kernel/tracing/instances/irq_gia_google/trace
+    # With permissions 666, trace was not captured in the bugreport.
+    # Apply relaxed permissions.
+    chmod 777 /sys/kernel/tracing/instances/irq_gia_google
+    chmod 777 /sys/kernel/tracing/instances/irq_gia_google/trace
     chown system system /sys/kernel/tracing/instances/irq_gia_google
     chown system system /sys/kernel/tracing/instances/irq_gia_google/trace
 
