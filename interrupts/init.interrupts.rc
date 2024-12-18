@@ -15,3 +15,8 @@ on init
     # Having low size helps because this entire buffer gets dumped in bugreport.
     # Having a large size can impact bugreport size and time it takes to pack/unpack.
     write /sys/kernel/tracing/instances/irq_gia_google/buffer_size_kb 16
+
+    # Reduce some GIA events from interrupt handler
+    write /sys/kernel/tracing/instances/irq_gia_google/events/irq_gia/gia_get_power/enable 0
+    write /sys/kernel/tracing/instances/irq_gia_google/events/irq_gia/gia_put_power/enable 0
+    write /sys/kernel/tracing/instances/irq_gia_google/events/irq_gia/gia_irq_eoi/enable 0
