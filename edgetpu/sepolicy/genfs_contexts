@@ -1,0 +1,1 @@
+genfscon debugfs /edgetpu                                               u:object_r:vendor_edgetpu_debugfs:s0
