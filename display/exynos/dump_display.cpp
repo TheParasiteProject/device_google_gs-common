@@ -18,7 +18,7 @@
 
 int main() {
     setbuf(stdout, NULL);
-    dumpFileContent("DECON-0 counters /sys/class/drm/card0/device/decon0/counters", "/sys/class/drm/card0/device/decon0/counters");
+    dumpFileContent("DECON-0 counters", "/sys/class/drm/card0/device/decon0/counters");
     dumpFileContent("CRTC-0 event log", "/sys/kernel/debug/dri/0/crtc-0/event");
     runCommand("libdisplaycolor", "/vendor/bin/dumpsys displaycolor -v");
 

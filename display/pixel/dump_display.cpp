@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 #include <dump/pixel_dump.h>
+#include <android-base/file.h>
 
 int main() {
-    dumpFileContent("DECON-1 counters /sys/class/drm/card0/device/decon1/counters", "/sys/class/drm/card0/device/decon1/counters");
-    dumpFileContent("CRTC-1 event log", "/sys/kernel/debug/dri/0/crtc-1/event");
+    setbuf(stdout, NULL);
+    dumpFileContent("CRTC-0 status", "/sys/kernel/debug/dri/0/crtc-0/status");
+    runCommand("libdisplaycolor", "/vendor/bin/dumpsys displaycolor -v");
 
-    dumpFileContent("Secondary panel name", "/sys/class/drm/card0/device/secondary-panel/panel_name");
-    dumpFileContent("Secondary panel extra info", "/sys/class/drm/card0/device/secondary-panel/panel_extinfo");
-    dumpFileContent("Secondary panel power mode register", "/sys/class/drm/card0/device/secondary-panel/power_mode");
+    dumpFileContent("Primary panel name", "/sys/class/drm/card0/device/primary-panel/panel_name");
+    dumpFileContent("Primary panel extra info", "/sys/class/drm/card0/device/primary-panel/panel_extinfo");
+    dumpFileContent("Primary panel power Vreg", "/sys/class/drm/card0/device/primary-panel/panel_pwr_vreg");
+    dumpFileContent("Primary panel power mode register", "/sys/class/drm/card0/device/primary-panel/power_mode");
     return 0;
 }
