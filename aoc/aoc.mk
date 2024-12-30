@@ -1,11 +1,5 @@
 BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/aoc/sepolicy
 
-# Skip aosp_ build due to dcservice_app is not available
-ifeq (,$(filter aosp_%, $(TARGET_PRODUCT)))
-BOARD_VENDOR_SEPOLICY_DIRS += \
-        device/google/gs-common/aoc/sepolicy/allowlist
-endif
-
 PRODUCT_PACKAGES += dump_aoc \
 		    aocd \
 		    aocxd
