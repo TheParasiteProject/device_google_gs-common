@@ -26,5 +26,9 @@
             <name>IBluetoothEwp</name>
             <instance>default</instance>
         </interface>
+        <interface>
+            <name>IBluetoothCco</name>
+            <instance>default</instance>
+        </interface>
     </hal>
 </compatibility-matrix>
