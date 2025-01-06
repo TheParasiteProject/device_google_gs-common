@@ -20,8 +20,20 @@ endif
 # All shipping releases will switch to prebuilts (trunk+)
 # if this condition is not true, then build from source.
 
-ifneq ($(RELEASE_PIXEL_CAMERA_ENABLE_PREBUILT),true)
+# Fallback if the prebuilts directory does not exist, then we must
+# build from source no matter what, so we log a warning
+ifeq ($(RELEASE_PIXEL_CAMERA_ENABLE_PREBUILT),true)
+  ifeq ($(wildcard vendor/google/services/LyricCameraHAL/prebuilt),)
+    $(warning Lyric prebuilt directory is missing, it will be built from source)
+    BUILD_LYRIC_FROM_SOURCE := true
+  else
+    BUILD_LYRIC_FROM_SOURCE := false
+  endif
+else
+  BUILD_LYRIC_FROM_SOURCE := true
+endif  # RELEASE_PIXEL_CAMERA_ENABLE_PREBUILT
 
+ifeq ($(BUILD_LYRIC_FROM_SOURCE),true)
 PRODUCT_SOONG_NAMESPACES += \
     vendor/google/camera \
     vendor/google/camera/google_3a/libs_v4 \
@@ -37,11 +49,7 @@ PRODUCT_SOONG_NAMESPACES += \
     vendor/google/camera/google_3a/libs_v4/gAF \
     vendor/google/camera/google_3a/libs_v4/gafd \
     vendor/google/camera/google_3a/libs_v4/gHAWB/native_coverage
-
-# Calibration tool for debug builds
-PRODUCT_PACKAGES_DEBUG += tarasque_test
-PRODUCT_PACKAGES_DEBUG += ProtoCalibGenerator
-endif  # RELEASE_PIXEL_CAMERA_ENABLE_PREBUILT check
+endif  # BUILD_LYRIC_FROM_SOURCE
 
 # Init-time log settings for Google 3A
 PRODUCT_PACKAGES += libg3a_standalone_gabc_rc
@@ -50,6 +58,7 @@ PRODUCT_PACKAGES += libg3a_standalone_ghawb_rc
 
 # Vendor APEX which contains the camera HAL
 PRODUCT_PACKAGES += com.google.pixel.camera.hal
+PRODUCT_PACKAGES += venodr-apex-allowlist-lyric.xml
 PRODUCT_PACKAGES += init.camera.set-interrupts-ownership
 PRODUCT_PACKAGES += lyric_preview_dis_xml
 
@@ -61,3 +70,7 @@ DEVICE_MATRIX_FILE += \
 
 # sepolicy dir is added in dump.mk.
 # Make doesn't deduplicate sepolicy dirs, so including it here causes build errors.
+
+# Calibration tools for debug builds
+PRODUCT_PACKAGES_DEBUG += tarasque_test
+PRODUCT_PACKAGES_DEBUG += ProtoCalibGenerator

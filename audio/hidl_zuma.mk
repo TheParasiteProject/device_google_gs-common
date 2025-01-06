@@ -42,7 +42,7 @@ PRODUCT_PACKAGES += \
 endif
 
 BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hidl
-BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hdmi_audio
+BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/audio/sepolicy/hdmi_audio/drmdp
 
 include device/google/gs-common/audio/common.mk
 
