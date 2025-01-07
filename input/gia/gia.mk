@@ -1,8 +1,8 @@
-# GIA is not designed for AOSP
+# When not AOSP target
 ifeq (,$(filter aosp_%, $(TARGET_PRODUCT)))
 	BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/input/gia/sepolicy
 
-	# If Pixel System Service exists, allow it to access GIA
+	# When not factory target
 	ifeq (,$(filter factory_%, $(TARGET_PRODUCT)))
 		BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/input/gia/sepolicy-pixelsystemservice
 	endif
