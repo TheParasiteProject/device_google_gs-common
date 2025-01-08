@@ -118,6 +118,46 @@ void dumpLogsAscending(const char* SrcDir, const char* DestDir, int limit, const
     return;
 }
 
+void deleteRecursively(const char* dest_dir) {
+    struct dirent **dirent_list;
+    int num_entries = scandir(dest_dir, &dirent_list, 0, alphasort);
+    if (num_entries < 0) {
+        printf("Unable to scan dir: %s.\n", dest_dir);
+        return;
+    }
+
+    for (int i = 0; i < num_entries; i++) {
+        char path[1024];
+        snprintf(path, sizeof(path), "%s/%s", dest_dir, dirent_list[i]->d_name);
+
+        if (strcmp(dirent_list[i]->d_name, ".") == 0 || strcmp(dirent_list[i]->d_name, "..") == 0) {
+            free(dirent_list[i]);
+            continue;
+        }
+
+        struct stat statbuf;
+        if (stat(path, &statbuf) == 0) {
+            if (S_ISDIR(statbuf.st_mode)) {
+                deleteRecursively(path);
+            } else {
+                printf("Delete %s\n", path);
+                if (unlink(path) != 0) {
+                    printf("Unable to delete file: %s\n", path);
+                }
+            }
+        } else {
+            printf("Unable to get file status: %s\n", path);
+        }
+        free(dirent_list[i]);
+    }
+
+    free(dirent_list);
+
+    if (rmdir(dest_dir) != 0) {
+        printf("Unable to delete directory: %s\n", dest_dir);
+    }
+}
+
 int main() {
     if(!::android::base::GetBoolProperty("vendor.gps.aol.enabled", false)) {
         printf("vendor.gps.aol.enabled is false. gps logging is not running.\n");
@@ -125,6 +165,12 @@ int main() {
     }
     int maxFileNum = ::android::base::GetIntProperty(GPS_LOG_NUMBER_PROPERTY, 20);
     std::string outputDir = concatenatePath(BUGREPORT_PACKING_DIR, "gps");
+
+    struct stat statbuf;
+    if (stat(outputDir.c_str(), &statbuf) == 0) {
+      printf("Directory %s already exists, delete\n", outputDir.c_str());
+      deleteRecursively(outputDir.c_str());
+    }
     if (mkdir(outputDir.c_str(), 0777) == -1) {
       printf("Unable to create folder: %s\n", outputDir.c_str());
       return 0;
