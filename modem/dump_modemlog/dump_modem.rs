@@ -3,6 +3,7 @@
 //! The dump_modem binary is used to capture kernel/userspace logs in bugreport
 
 use std::fs;
+use std::str::FromStr;
 
 const MODEM_STAT: &str = "/data/vendor/modem_stat/debug.txt";
 const SSRDUMP_DIR: &str = "/data/vendor/ssrdump";
@@ -10,6 +11,7 @@ const RFSD_ERR_LOG_DIR: &str = "/data/vendor/log/rfsd";
 const WAKEUP_EVENTS: &str = "/sys/devices/platform/cpif/wakeup_events";
 const CPIF_LOGBUFFER: &str = "/dev/logbuffer_cpif";
 const PCIE_EVENT_STATS: &str = "/sys/devices/platform/cpif/modem/pcie_event_stats";
+const KERNEL_METRICS_DIR: &str = "/sys/kernel/pixel_metrics/modem";
 
 fn handle_io_error(file: &str, err: std::io::Error) {
     match err.kind() {
@@ -57,6 +59,13 @@ fn print_matching_files_in_dir(dir: &str, filename: &str) {
     }
 }
 
+fn get_property(key: &str, default_value: i32) -> i32 {
+    let value = rustutils::system_properties::read(key)
+        .unwrap_or(None)
+        .unwrap_or(default_value.to_string());
+    i32::from_str(&value).unwrap_or(default_value)
+}
+
 // Capture modem stat log if it exists
 fn modem_stat() {
     println!("------ Modem Stat ------");
@@ -99,6 +108,27 @@ fn pcie_event_stats() {
     println!();
 }
 
+// Capture kernel metrics stats if the sysfs attribute exists
+fn print_kernel_metrics() {
+    println!("------ Kernel Metrics ------");
+
+    let file_list = vec![
+        "modem_boot_duration",
+        "modem_wakeup_ap",
+        "pcie_link_state",
+        "pcie_link_duration",
+        "pcie_link_stats",
+        "pcie_link_updown",
+    ];
+
+    for file in file_list {
+        println!("------ {} ------", file);
+        let file_path = format!("{}/{}", KERNEL_METRICS_DIR, file);
+        print_file_and_handle_error(&file_path);
+        println!();
+    }
+}
+
 fn main() {
     modem_stat();
     modem_ssr_history();
@@ -106,4 +136,9 @@ fn main() {
     wakeup_events();
     cpif_logbuffer();
     pcie_event_stats();
+
+    let prop_value = get_property("persist.vendor.modem.qms.kernel_metrics_collection", 0);
+    if prop_value == 1 {
+        print_kernel_metrics();
+    }
 }
