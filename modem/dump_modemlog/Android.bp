@@ -5,6 +5,7 @@ package {
 rust_binary {
     name: "dump_modem",
     srcs: ["dump_modem.rs"],
+    rustlibs: ["librustutils"],
     vendor: true,
     relative_install_path: "dump",
 }
