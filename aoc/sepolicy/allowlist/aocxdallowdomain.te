@@ -1,0 +1,6 @@
+# Aocx AIDL service
+allow aocxdallowdomain aocx:service_manager find;
+
+binder_call(aocxdallowdomain, aocxd)
+# Allow aocxd asynchronous callback to aocxdallowdomain
+binder_call(aocxd, aocxdallowdomain)

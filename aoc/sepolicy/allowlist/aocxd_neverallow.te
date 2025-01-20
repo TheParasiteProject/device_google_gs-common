@@ -1,0 +1,11 @@
+# set up rule to control the access to aocxd
+neverallow {
+  domain
+  -hwservicemanager
+  -servicemanager
+  -vndservicemanager
+  -system_suspend_server
+  -dumpstate
+  -hal_audio_default
+  -aocxdallowdomain
+} aocxd:binder { call transfer };
