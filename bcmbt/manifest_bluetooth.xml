@@ -23,6 +23,5 @@
         <fqname>IBluetoothExt/default</fqname>
         <fqname>IBluetoothFinder/default</fqname>
         <fqname>IBluetoothSar/default</fqname>
-        <fqname>IBluetoothCco/default</fqname>
     </hal>
 </manifest>
