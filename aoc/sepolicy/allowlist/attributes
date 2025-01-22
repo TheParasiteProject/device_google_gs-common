@@ -1,2 +1,0 @@
-# Allow domain to access aocx HAL API
-attribute aocxdallowdomain;
