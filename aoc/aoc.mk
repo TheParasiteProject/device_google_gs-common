@@ -1,6 +1,4 @@
-BOARD_VENDOR_SEPOLICY_DIRS += \
-    device/google/gs-common/aoc/sepolicy \
-    device/google/gs-common/aoc/sepolicy/allowlist
+BOARD_VENDOR_SEPOLICY_DIRS += device/google/gs-common/aoc/sepolicy
 
 PRODUCT_PACKAGES += dump_aoc \
 		    aocd \
