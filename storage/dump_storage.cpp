@@ -67,10 +67,30 @@ int main() {
     int mnt_time = android::base::GetIntProperty(F2FS_MNT_TIME_PROPERTY, 0);
     printf("--- F2FS - checkpoint=disable time (ms) ---\n%d\n\n", mnt_time);
 
+    const std::string f2fs_proc_path("/proc/fs/f2fs/");
+    std::unique_ptr<DIR, decltype(&closedir)> procdir(
+        opendir(f2fs_proc_path.c_str()), closedir);
+    if (procdir) {
+      dirent *proc_entry;
+      while ((proc_entry = readdir(procdir.get())) != nullptr) {
+        std::string proc_name(proc_entry->d_name);
+        if (proc_name == "." || proc_name == ".." ||
+            strncmp(proc_name.c_str(), "dm-", 3))
+          continue;
+        dumpFileContent(("F2FS - " + proc_name).c_str(),
+                        (f2fs_proc_path + proc_name + "/disk_map").c_str());
+      }
+    }
+
     //UFS
     dumpFileContent("UFS model", "/sys/block/sda/device/model");
     dumpFileContent("UFS rev", "/sys/block/sda/device/rev");
     dumpFileContent("UFS size", "/sys/block/sda/size");
+
+    dumpFileContent("UFS phy version",
+                    "/dev/sys/block/bootdevice/pixel/phy_version");
+    dumpFileContent("UFS phy release_date",
+                    "/dev/sys/block/bootdevice/pixel/phy_release_date");
 
     dumpFileContent("UFS Slow IO Read",
                     "/dev/sys/block/bootdevice/slowio_read_cnt");
