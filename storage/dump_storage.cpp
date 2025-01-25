@@ -27,7 +27,6 @@
 
 #define F2FS_FSCK_TIME_PROPERTY "ro.boottime.init.fsck.data"
 #define F2FS_MNT_TIME_PROPERTY "ro.boottime.init.mount.data"
-#define BOOTDEVICE_PROPERTY "ro.boot.bootdevice"
 #define BUILD_TYPE_PROPERTY "ro.build.type"
 
 void read_buffer(int buf_id, int total_len, const char* path)
@@ -90,24 +89,10 @@ int main() {
     if (statdir) {
         dirent *stat_entry;
         while ((stat_entry = readdir(statdir.get())) != nullptr) {
-            std::string ufs_err_stats_path(stat_entry->d_name);
-            if (!strcmp(ufs_err_stats_path.c_str(), ".")
-                    || !strcmp(ufs_err_stats_path.c_str(), ".."))
-                continue;
-            std::string bootdevice = android::base::GetProperty(
-                    BOOTDEVICE_PROPERTY, "");
-            std::string err_stat_path = "/sys/devices/platform/";
-            err_stat_path.append(bootdevice.c_str());
-            err_stat_path.append("/err_stats/");
-            err_stat_path.append(ufs_err_stats_path.c_str());
-            std::ifstream err_stat_file(err_stat_path);
-            if (err_stat_file.is_open()) {
-                std::string err_stat_atom;
-                err_stat_file >> err_stat_atom;
-                printf("%s:%s\n", ufs_err_stats_path.c_str(),
-                       err_stat_atom.c_str());
-                err_stat_file.close();
-            }
+          std::string stat_name(stat_entry->d_name);
+          if (stat_name == "." || stat_name == "..") continue;
+          dumpFileContent(stat_name.c_str(),
+                          (ufs_err_stats_path + stat_name).c_str());
         }
     }
 
