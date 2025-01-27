@@ -187,6 +187,37 @@ on init
     write /sys/devices/system/cpu/cpu7/cpufreq/sched_pixel/down_rate_limit_us 500
     write /sys/devices/system/cpu/cpu8/cpufreq/sched_pixel/down_rate_limit_us 500
 
+    # Default rampup multiplier setup
+    write /proc/vendor_sched/groups/bg/rampup_multiplier 0
+    write /proc/vendor_sched/groups/cam/rampup_multiplier 1
+    write /proc/vendor_sched/groups/cam_power/rampup_multiplier 1
+    write /proc/vendor_sched/groups/dex2oat/rampup_multiplier 0
+    write /proc/vendor_sched/groups/fg/rampup_multiplier 1
+    write /proc/vendor_sched/groups/fg_wi/rampup_multiplier 1
+    write /proc/vendor_sched/groups/nnapi/rampup_multiplier 0
+    write /proc/vendor_sched/groups/ota/rampup_multiplier 0
+    write /proc/vendor_sched/groups/rt/rampup_multiplier 0
+    write /proc/vendor_sched/groups/sf/rampup_multiplier 1
+    write /proc/vendor_sched/groups/sys/rampup_multiplier 0
+    write /proc/vendor_sched/groups/sys_bg/rampup_multiplier 0
+    write /proc/vendor_sched/groups/ta/rampup_multiplier 1
+    write /proc/vendor_sched/adpf_rampup_multiplier 4
+
+    # Default util_est setup
+    write /proc/vendor_sched/groups/bg/disable_util_est 1
+    write /proc/vendor_sched/groups/cam/disable_util_est 0
+    write /proc/vendor_sched/groups/cam_power/disable_util_est 0
+    write /proc/vendor_sched/groups/dex2oat/disable_util_est 1
+    write /proc/vendor_sched/groups/fg/disable_util_est 0
+    write /proc/vendor_sched/groups/fg_wi/disable_util_est 0
+    write /proc/vendor_sched/groups/nnapi/disable_util_est 1
+    write /proc/vendor_sched/groups/ota/disable_util_est 1
+    write /proc/vendor_sched/groups/rt/disable_util_est 1
+    write /proc/vendor_sched/groups/sf/disable_util_est 0
+    write /proc/vendor_sched/groups/sys/disable_util_est 1
+    write /proc/vendor_sched/groups/sys_bg/disable_util_est 1
+    write /proc/vendor_sched/groups/ta/disable_util_est 0
+
     # RT uclamp setting
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
 
