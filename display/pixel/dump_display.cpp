@@ -19,6 +19,7 @@
 int main() {
     setbuf(stdout, NULL);
     dumpFileContent("CRTC-0 status", "/sys/kernel/debug/dri/0/crtc-0/status");
+    dumpFileContent("DRM State", "/sys/kernel/debug/dri/0/state");
     runCommand("libdisplaycolor", "/vendor/bin/dumpsys displaycolor -v");
 
     dumpFileContent("Primary panel name", "/sys/class/drm/card0/device/primary-panel/panel_name");
