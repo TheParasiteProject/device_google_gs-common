@@ -17,9 +17,6 @@ hal_server_domain(gia, hal_gia)
 allow gia sysfs_touch_gti:dir r_dir_perms;
 allow gia sysfs_touch_gti:file rw_file_perms;
 
-# allow pixelsystemservice_app to communicate with gia
-binder_use(pixelsystemservice_app)
-hal_client_domain(pixelsystemservice_app, hal_gia)
-
-# allow gia to execute callback for pixelsystemservice_app
-binder_call(gia, pixelsystemservice_app)
+# allow gia for collecting device stats
+allow gia fwk_stats_service:service_manager find;
+binder_call(gia, stats_service_server);
