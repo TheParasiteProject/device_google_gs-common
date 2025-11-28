@@ -1,3 +1,0 @@
-# touch predump script
-allow predump_touch proc_touch:dir search;
-allow predump_touch proc_touch:file rw_file_perms;

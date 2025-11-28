@@ -1,2 +1,0 @@
-# Audio
-type hal_audio_ext_hwservice, hwservice_manager_type;

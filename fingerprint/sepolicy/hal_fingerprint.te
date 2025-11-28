@@ -1,1 +1,0 @@
-allow hal_fingerprint trusty_log_device:chr_file r_file_perms;

@@ -1,2 +1,0 @@
-#Vendor Sched
-allow proc_vendor_sched proc:filesystem associate;

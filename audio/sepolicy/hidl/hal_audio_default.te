@@ -1,3 +1,0 @@
-hwbinder_use(hal_audio_default)
-
-add_hwservice(hal_audio_default, hal_audio_ext_hwservice)

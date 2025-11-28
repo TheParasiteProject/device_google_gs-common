@@ -1,3 +1,0 @@
-# for intelligence service
-
-allow kernel userdata_exp_block_device:blk_file { read write };

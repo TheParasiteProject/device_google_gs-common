@@ -1,2 +1,0 @@
-dontaudit dumpstate vendor_dmabuf_debugfs:file r_file_perms;
-

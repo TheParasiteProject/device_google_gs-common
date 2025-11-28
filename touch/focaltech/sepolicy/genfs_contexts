@@ -1,3 +1,0 @@
-genfscon proc  /focaltech_touch                                                u:object_r:proc_touch:s0
-
-

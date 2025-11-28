@@ -1,2 +1,0 @@
-# Gxp sysfs file
-type sysfs_gxp, sysfs_type, fs_type;

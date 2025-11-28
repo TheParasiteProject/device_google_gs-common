@@ -1,3 +1,0 @@
-/vendor/bin/dump/dump_trusty\.sh      u:object_r:dump_trusty_exec:s0
-
-/dev/trusty-log0                      u:object_r:trusty_log_device:s0

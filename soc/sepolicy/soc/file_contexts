@@ -1,3 +1,0 @@
-/vendor/bin/dump/dump_soc           u:object_r:dump_soc_exec:s0
-/vendor/bin/dump/dump_memory        u:object_r:dump_memory_exec:s0
-

@@ -1,2 +1,0 @@
-# touch predump script
-type proc_touch, proc_type, fs_type;

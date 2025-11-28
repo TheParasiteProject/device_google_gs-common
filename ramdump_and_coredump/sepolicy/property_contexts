@@ -1,3 +1,0 @@
-# ramdump
-ro.boot.ramdump                           u:object_r:vendor_ramdump_prop:s0
-vendor.debug.ramdump.                     u:object_r:vendor_ramdump_prop:s0

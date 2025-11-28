@@ -1,3 +1,0 @@
-pixel_bugreport(dump_display_logbuffer)
-
-allow dump_display_logbuffer display_log_device:chr_file r_file_perms;
